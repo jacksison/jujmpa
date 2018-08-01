@@ -11,6 +11,9 @@ class PrivateUrlSentMailRecordAdmin(admin.ModelAdmin):
     ordering = ('timestamp',)
     search_fields = ('email', 'speaker__name', 'adjudicator__name')
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('speaker__team__tournament')
+
     def get_team(self, obj):
         if obj.speaker:
             return obj.speaker.team
